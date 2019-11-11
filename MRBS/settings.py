@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app01.apps.App01Config',
+
 ]
 
 MIDDLEWARE = [
@@ -122,5 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES = [
+    os.path.join(BASE_DIR, 'app01/static')
+]
 
 

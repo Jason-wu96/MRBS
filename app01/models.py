@@ -6,7 +6,13 @@ class UserInfo(AbstractUser):
     """
     用户表
     """
-    tel = models.CharField(max_length=32)
+    phone = models.CharField(max_length=32, default='13613726612')
+    sex_choice = (
+        (1, '男'),
+        (2, '女')
+    )
+    sex = models.IntegerField(choices=sex_choice,default=1)
+    email = models.EmailField(max_length=32)
 
 
 class Room(models.Model):

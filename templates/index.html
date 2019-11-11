@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <script src="/static/js/jquery-1.12.4.min.js"></script>
-    <script src="/static/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-    <script src="/static/datetimepicker//bootstrap-datetimepicker.zh-CN.js"></script>
+ <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+ <script src="/static/js/jquery-1.12.4.min.js"></script>
+
+ <script src="/static/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+ <script src="/static/datetimepicker//bootstrap-datetimepicker.zh-CN.js"></script>
     <style>
         .active{
             background-color: green!important;
@@ -25,7 +26,10 @@
     </style>
 </head>
 <body>
+{% include 'demo.html' %}
 <h3>会议室预定</h3>
+
+
 <div class="calender pull-right">
       <div class='input-group' style="width: 230px;">
             <input type='text' class="form-control" id='datetimepicker11' placeholder="请选择日期"/>
@@ -70,8 +74,8 @@
 
     var POST_DATA={
         "ADD":{},
-        "DEL":{},
-
+        "DEL":{}
+        
     };
 
     // 为td绑定单击事件
@@ -102,7 +106,7 @@
                   if(POST_DATA.ADD[room_id]){
                       POST_DATA.ADD[room_id].push(time_id)
                   }else {
-                      POST_DATA.ADD[room_id]=[time_id,]
+                      POST_DATA.ADD[room_id]=[time_id]
                   }
 
 
