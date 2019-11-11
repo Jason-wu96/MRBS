@@ -12,10 +12,22 @@ from django.contrib import auth
 from .models import *
 import datetime
 import json
-from django.db.models import Q
+from app01.form import RegForm
+
+
+def register(request):
+    form_obj = RegForm()
+    if request.method == 'POST':
+        form_obj = RegForm(request.POST)
+        if form_obj.is_valid():
+            form_obj.cleaned_data.pop("r_password")
+            UserInfo.objects.create_user(**form_obj.cleaned_data)
+            return redirect('/login/')
+    return render(request, 'register.html', locals())
 
 
 def login(request):
+    error = ''
     if request.method == "POST":
         username = request.POST.get("username")
         pwd = request.POST.get("password")
@@ -24,12 +36,15 @@ def login(request):
             auth.login(request, user)  # request.user
             request.session['user'] = username
             return redirect("/index/")    # 登陆成功返回index页面
-    return render(request, "login.html")
+        else:
+            error = '账号或密码错误'
+    return render(request, "login.html",locals())
 
 
 def index(request):
     # 验证是否登录，没有登录不能访问此页面
-    if not request.session['user']:
+    user = request.session.get('user')
+    if not user:
         return redirect('/login/')
     # 获取当前日期
     date = datetime.datetime.now().date()
@@ -54,7 +69,7 @@ def index(request):
             if flag:
                 if request.user.pk == book.user.pk:
                     # 预定该房间
-                     htmls += "<td class='active item'  room_id={} time_id={}>{}</td>".format(room.pk, time_choice[0], book.user.username)
+                     htmls += "<td class='active item'  room_id={} time_id={}>{}</td>".format(room.pk, time_choice[0], '已约满')
                 else:
                     # 取消预定
                      htmls += "<td class='another_active item'  room_id={} time_id={}>{}</td>".format(room.pk, time_choice[0], book.user.username)
@@ -78,18 +93,21 @@ def book(request):
                 book_list.append(book_obj)
         Book.objects.bulk_create(book_list)
         # 删除预定
-        remove_book = Q()
         for room_id, time_id_list in post_data["DEL"].items():
-            temp = Q()
             for time_id in time_id_list:
-                temp.children.append(("room_id", room_id))
-                temp.children.append(("time_id", time_id))
-                temp.children.append(("user_id", request.user.pk))
-                temp.children.append(("date", choose_date))
-                remove_book.add(temp, "OR")
-        if remove_book:
-             Book.objects.filter(remove_book).delete()
+                Book.objects.filter(user=request.user, room_id=room_id, time_id=time_id, date=choose_date).delete()
     except Exception as e:
         res["state"] = False
         res["msg"] = str(e)
+
     return HttpResponse(json.dumps(res))
+
+
+def logout(request):
+    request.session.clear()
+    return redirect('/login/')
+
+
+def mybook(request):
+    book_list = Book.objects.filter(user=request.user)
+    return render(request, 'mybook.html', locals())

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -19,8 +20,10 @@
                     <label for="password">密码</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                 </div>
-                <input type="submit" class="btn-primary pull-right" value="登录">
+                <p><input type="submit" class="btn-primary pull-right" value="登录"></p>
             </form>
+                <p>还没有账号？<a href="/register/" class="btn-danger ">注册</a></p>
+            <p><span>{{ error }}</span></p>
         </div>
     </div>
 </div>
