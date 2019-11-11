@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mybook</title>
+       <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+{% include 'demo.html' %}
+<table class="table table-bordered">
+    <thead>
+   <tr>
+        <th>日期</th>
+        <th>房间</th>
+        <th>时间点</th>
+    </tr>
+
+    </thead>
+    <tbody>
+        {% for book in book_list %}
+            <tr>
+            <td>{{ book.date }}</td>
+            <td>{{ book.room }}</td>
+            <td>{{ book.get_time_id_display }}
+            </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>
+</body>
+</html>
